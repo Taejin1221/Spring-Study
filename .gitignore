@@ -177,6 +177,7 @@ Temporary Items
 .gradle
 **/build/
 !src/**/build/
+*/src/test/*
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -202,3 +203,6 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,java,intellij,gradle.idea/
 /.idea/
+
+*/.gitignore
+*gradle*
