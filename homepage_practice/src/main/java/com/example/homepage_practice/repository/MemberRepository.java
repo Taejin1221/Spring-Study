@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemberRepository {
@@ -23,8 +24,8 @@ public class MemberRepository {
         return member;
     }
 
-    public Member findById(Long id) {
-        return em.find(Member.class, id);
+    public Optional<Member> findById(Long id) {
+        return Optional.ofNullable(em.find(Member.class, id));
     }
 
     public List<Member> findAll() {
@@ -32,15 +33,23 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    public Member findByEmail(String email) throws NoResultException {
-        return em.createQuery("select m from Member m where m.email = :email", Member.class)
-                .setParameter("email", email)
-                .getSingleResult();
+    public Optional<Member> findByEmail(String email) {
+        try {
+            return Optional.of(em.createQuery("select m from Member m where m.email = :email", Member.class)
+                    .setParameter("email", email)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
-    public Member findByNickname(String nickname) throws NoResultException {
-        return em.createQuery("select m from Member m where m.nickname = :nickname", Member.class)
-                .setParameter("nickname", nickname)
-                .getSingleResult();
+    public Optional<Member> findByNickname(String nickname) throws NoResultException {
+        try {
+            return Optional.of(em.createQuery("select m from Member m where m.nickname = :nickname", Member.class)
+                    .setParameter("nickname", nickname)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

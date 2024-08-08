@@ -31,35 +31,26 @@ public class MemberService {
     }
 
     private boolean isDuplicatedEmail(String email) {
-        try {
-            memberRepository.findByEmail(email);
-
-            return true;
-        } catch (NoResultException e) {
-            return false;
-        }
+        return memberRepository.findByEmail(email).isPresent();
     }
 
     private boolean isDuplicatedNickname(String nickname) {
-        try {
-            memberRepository.findByNickname(nickname);
-
-            return true;
-        } catch (NoResultException e) {
-            return false;
-        }
+        return memberRepository.findByNickname(nickname).isPresent();
     }
 
     public boolean login(String email, String password) {
-        try {
-            String correctPassword = memberRepository.findByEmail(email).getPassword();
-            if (correctPassword.equals(password)) {
-                return true;
-            } else {
-                throw new IllegalStateException("비밀번호가 일치하지 않습니다. 다시 한번 확인해주세요.");
-            }
-        } catch (NoResultException e) {
-            throw new IllegalStateException("존재하지 않는 이메일입니다. 다시 한번 확인해주세요.");
+        Member member = getMember(email);
+
+        if (member.getPassword().equals(password)) {
+            return true;
+        } else {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다. 다시 한번 확인해주세요.");
         }
+    }
+
+    private Member getMember(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() ->
+            new IllegalStateException("존재하지 않는 이메일입니다. 다시 한번 확인해주세요.")
+        );
     }
 }

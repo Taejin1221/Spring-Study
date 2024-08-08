@@ -22,7 +22,7 @@ class MemberServiceTest {
         Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
         memberService.join(member);
 
-        Member result = memberRepository.findByNickname("taejin");
+        Member result = memberRepository.findByNickname("taejin").get();
         Assertions.assertThat(member).isEqualTo(result);
 
         Member dupEmail = new Member("taejin7824@gmail.com", "qwer", "gene");

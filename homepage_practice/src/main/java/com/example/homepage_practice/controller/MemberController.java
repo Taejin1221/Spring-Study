@@ -37,11 +37,8 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO<Member>> login(@RequestBody MemberLoginRequest memberLoginRequest) {
         try {
-            if (memberService.login(memberLoginRequest.getEmail(), memberLoginRequest.getPassword())) {
-                return new ResponseEntity<>(new ResponseDTO<>("로그인 완료", null), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(new ResponseDTO<>("예상치 못한 오류입니다. 관리자에게 문의하세요.", null), HttpStatus.NOT_FOUND);
-            }
+            memberService.login(memberLoginRequest.getEmail(), memberLoginRequest.getPassword());
+            return new ResponseEntity<>(new ResponseDTO<>("로그인 완료", null), HttpStatus.OK);
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(new ResponseDTO<>(e.getMessage(), null), HttpStatus.OK);
         }

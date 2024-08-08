@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -20,7 +21,7 @@ class MemberRepositoryTest {
         Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
         memberRepository.save(member);
 
-        Member result = memberRepository.findByEmail("taejin7824@gmail.com");
+        Member result = memberRepository.findByEmail("taejin7824@gmail.com").get();
         Assertions.assertThat(member).isEqualTo(result);
     }
 
@@ -29,19 +30,17 @@ class MemberRepositoryTest {
         Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
         memberRepository.save(member);
 
-        Member result = memberRepository.findById(member.getId());
+        Member result = memberRepository.findById(member.getId()).get();
         Assertions.assertThat(member).isEqualTo(result);
 
-        result = memberRepository.findById(Integer.toUnsignedLong(123));
-        Assertions.assertThat(result).isEqualTo(null);
+        Optional<Member> noResult = memberRepository.findById(Integer.toUnsignedLong(123));
+        Assertions.assertThat(noResult).isEqualTo(Optional.empty());
     }
 
     @Test
     void findAll() {
-        NoResultException e = org.junit.jupiter.api.Assertions.assertThrows(NoResultException.class, () -> {
-            memberRepository.findAll();
-        });
-        System.out.println(e.getMessage());
+        List<Member> results = memberRepository.findAll();
+        Assertions.assertThat(results.isEmpty()).isEqualTo(true);
 
         Member member1 = new Member();
         member1.setEmail("taejin7824@gmail.com");
@@ -55,18 +54,15 @@ class MemberRepositoryTest {
         member2.setNickname("gene");
         memberRepository.save(member2);
 
-        List<Member> results = memberRepository.findAll();
+        results = memberRepository.findAll();
         Assertions.assertThat(results.size()).isEqualTo(2);
 
     }
 
     @Test
     void findByEmail() {
-        NoResultException e = org.junit.jupiter.api.Assertions.assertThrows(NoResultException.class, () -> {
-            memberRepository.findByEmail("taejin7824@gmail.com");
-        });
-
-        System.out.println(e.getMessage());
+        Optional<Member> noResultExpected = memberRepository.findByEmail("taejin7824@gmail.com");
+        Assertions.assertThat(noResultExpected).isEqualTo(Optional.empty());
 
         Member member1 = new Member();
         member1.setEmail("taejin7824@gmail.com");
@@ -74,17 +70,14 @@ class MemberRepositoryTest {
         member1.setNickname("taejin");
         memberRepository.save(member1);
 
-        Member result = memberRepository.findByEmail("taejin7824@gmail.com");
+        Member result = memberRepository.findByEmail("taejin7824@gmail.com").get();
         Assertions.assertThat(member1).isEqualTo(result);
     }
 
     @Test
     void findByNickname() {
-        NoResultException e = org.junit.jupiter.api.Assertions.assertThrows(NoResultException.class, () -> {
-            memberRepository.findByNickname("taejin");
-        });
-
-        System.out.println(e.getMessage());
+        Optional<Member> noResultExpected = memberRepository.findByEmail("taejin7824@gmail.com");
+        Assertions.assertThat(noResultExpected).isEqualTo(Optional.empty());
 
         Member member1 = new Member();
         member1.setEmail("taejin7824@gmail.com");
@@ -92,7 +85,7 @@ class MemberRepositoryTest {
         member1.setNickname("taejin");
         memberRepository.save(member1);
 
-        Member result = memberRepository.findByNickname("taejin");
+        Member result = memberRepository.findByNickname("taejin").get();
         Assertions.assertThat(member1).isEqualTo(result);
     }
 }
