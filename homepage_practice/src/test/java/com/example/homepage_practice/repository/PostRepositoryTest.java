@@ -2,7 +2,7 @@ package com.example.homepage_practice.repository;
 
 import com.example.homepage_practice.domain.Member;
 import com.example.homepage_practice.domain.Post;
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,11 +28,11 @@ class PostRepositoryTest {
         Post post = new Post("Post1", "Hello, world!", member);
         postRepository.save(post);
 
-        Optional<Post> result = postRepository.findById(Integer.toUnsignedLong(1));
-        Assertions.assertThat(post).isEqualTo(result.get());
+        Optional<Post> result = postRepository.findById(post.getId());
+        assertThat(result.get()).isEqualTo(post);
 
         result = postRepository.findById(Integer.toUnsignedLong(2));
-        Assertions.assertThat(result).isEqualTo(Optional.empty());
+        assertThat(result).isEqualTo(Optional.empty());
     }
 
     @Test
@@ -47,11 +47,11 @@ class PostRepositoryTest {
         postRepository.save(post2);
 
         List<Post> result = postRepository.findByTitle("Post1");
-        Assertions.assertThat(result.size()).isEqualTo(2);
-        Assertions.assertThat(result).extracting(Post::getTitle).containsExactly("Post1", "Post1");
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).extracting(Post::getTitle).containsExactly(post1.getTitle(), post2.getTitle());
 
         result = postRepository.findByTitle("Post2");
-        Assertions.assertThat(result.isEmpty()).isEqualTo(true);
+        assertThat(result.isEmpty()).isEqualTo(true);
     }
 
     @Test
@@ -72,8 +72,8 @@ class PostRepositoryTest {
         postRepository.save(post3);
 
         List<Post> results = postRepository.findByMemberId(member1);
-        Assertions.assertThat(results.size()).isEqualTo(2);
-        Assertions.assertThat(results).extracting(Post::getTitle).containsExactly("Post1", "Post2");
+        assertThat(results.size()).isEqualTo(2);
+        assertThat(results).extracting(Post::getTitle).containsExactly(post1.getTitle(), post2.getTitle());
     }
 
     @Test
@@ -94,7 +94,7 @@ class PostRepositoryTest {
         postRepository.save(post3);
 
         List<Post> results = postRepository.findAll();
-        Assertions.assertThat(results.size()).isEqualTo(3);
-        Assertions.assertThat(results).extracting(Post::getTitle).containsExactlyInAnyOrder("Post1", "Post2", "Post3");
+        assertThat(results.size()).isEqualTo(3);
+        assertThat(results).extracting(Post::getTitle).containsExactlyInAnyOrder(post1.getTitle(), post2.getTitle(), post3.getTitle());
     }
 }

@@ -4,7 +4,7 @@ import com.example.homepage_practice.domain.Member;
 import com.example.homepage_practice.domain.Post;
 import com.example.homepage_practice.repository.MemberRepository;
 import com.example.homepage_practice.repository.PostRepository;
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +33,8 @@ class PostServiceTest {
         postService.write(post1);
 
         List<Post> result = postRepository.findByTitle("Post1");
-        Assertions.assertThat(result).extracting(Post::getTitle).containsExactly(post1.getTitle());
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result).extracting(Post::getTitle).containsExactly(post1.getTitle());
     }
 
     @Test
@@ -54,8 +55,8 @@ class PostServiceTest {
         postRepository.save(post3);
 
         List<Post> results = postService.getAllPosts();
-        Assertions.assertThat(results.size()).isEqualTo(3);
-        Assertions.assertThat(results).extracting(Post::getTitle).containsExactly(post1.getTitle(), post2.getTitle(), post3.getTitle());
+        assertThat(results.size()).isEqualTo(3);
+        assertThat(results).extracting(Post::getTitle).containsExactly(post1.getTitle(), post2.getTitle(), post3.getTitle());
     }
 
     @Test
@@ -70,7 +71,7 @@ class PostServiceTest {
         postRepository.save(post2);
 
         List<Post> results = postService.getPostsByMember(member1);
-        Assertions.assertThat(results.size()).isEqualTo(2);
-        Assertions.assertThat(results).extracting(Post::getTitle).containsExactly(post1.getTitle(), post1.getTitle());
+        assertThat(results.size()).isEqualTo(2);
+        assertThat(results).extracting(Post::getTitle).containsExactly(post1.getTitle(), post1.getTitle());
     }
 }

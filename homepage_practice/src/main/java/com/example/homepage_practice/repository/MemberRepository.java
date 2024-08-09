@@ -29,13 +29,13 @@ public class MemberRepository {
     }
 
     public List<Member> findAll() {
-        return em.createQuery("select m from Member m", Member.class)
+        return em.createQuery("SELECT m FROM Member m", Member.class)
                 .getResultList();
     }
 
     public Optional<Member> findByEmail(String email) {
         try {
-            return Optional.of(em.createQuery("select m from Member m where m.email = :email", Member.class)
+            return Optional.of(em.createQuery("SELECT m FROM Member m WHERE m.email = :email", Member.class)
                     .setParameter("email", email)
                     .getSingleResult());
         } catch (NoResultException e) {
@@ -45,7 +45,7 @@ public class MemberRepository {
 
     public Optional<Member> findByNickname(String nickname) throws NoResultException {
         try {
-            return Optional.of(em.createQuery("select m from Member m where m.nickname = :nickname", Member.class)
+            return Optional.of(em.createQuery("SELECT m FROM Member m WHERE m.nickname = :nickname", Member.class)
                     .setParameter("nickname", nickname)
                     .getSingleResult());
         } catch (NoResultException e) {

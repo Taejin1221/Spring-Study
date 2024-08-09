@@ -1,8 +1,7 @@
 package com.example.homepage_practice.repository;
 
 import com.example.homepage_practice.domain.Member;
-import jakarta.persistence.NoResultException;
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,74 +17,62 @@ class MemberRepositoryTest {
 
     @Test
     void save() {
-        Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
-        memberRepository.save(member);
+        Member member1 = new Member("taejin7824@gmail.com", "1234", "taejin");
+        memberRepository.save(member1);
 
         Member result = memberRepository.findByEmail("taejin7824@gmail.com").get();
-        Assertions.assertThat(member).isEqualTo(result);
+        assertThat(result).isEqualTo(member1);
     }
 
     @Test
     void findById() {
-        Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
-        memberRepository.save(member);
+        Member member1 = new Member("taejin7824@gmail.com", "1234", "taejin");
+        memberRepository.save(member1);
 
-        Member result = memberRepository.findById(member.getId()).get();
-        Assertions.assertThat(member).isEqualTo(result);
+        Optional<Member> result = memberRepository.findById(member1.getId());
+        assertThat(result.get()).isEqualTo(member1);
 
-        Optional<Member> noResult = memberRepository.findById(Integer.toUnsignedLong(123));
-        Assertions.assertThat(noResult).isEqualTo(Optional.empty());
+        result = memberRepository.findById(Integer.toUnsignedLong(123));
+        assertThat(result).isEqualTo(Optional.empty());
     }
 
     @Test
     void findAll() {
         List<Member> results = memberRepository.findAll();
-        Assertions.assertThat(results.isEmpty()).isEqualTo(true);
+        assertThat(results.isEmpty()).isEqualTo(true);
 
-        Member member1 = new Member();
-        member1.setEmail("taejin7824@gmail.com");
-        member1.setPassword("1234");
-        member1.setNickname("taejin");
+        Member member1 = new Member("taejin7824@gmail.com", "1234", "taejin");
         memberRepository.save(member1);
 
-        Member member2 = new Member();
-        member2.setEmail("taejin7824@kakao.com");
-        member2.setPassword("qwer");
-        member2.setNickname("gene");
+        Member member2 = new Member("taejin7824@kakao.com", "qwer", "gene");
         memberRepository.save(member2);
 
         results = memberRepository.findAll();
-        Assertions.assertThat(results.size()).isEqualTo(2);
-
+        assertThat(results.size()).isEqualTo(2);
+        assertThat(results).extracting(Member::getEmail).containsExactly(member1.getEmail(), member2.getEmail());
     }
 
     @Test
     void findByEmail() {
-        Optional<Member> noResultExpected = memberRepository.findByEmail("taejin7824@gmail.com");
-        Assertions.assertThat(noResultExpected).isEqualTo(Optional.empty());
-
-        Member member1 = new Member();
-        member1.setEmail("taejin7824@gmail.com");
-        member1.setPassword("1234");
-        member1.setNickname("taejin");
+        Member member1 = new Member("taejin7824@gmail.com", "1234", "taejin");
         memberRepository.save(member1);
 
-        Member result = memberRepository.findByEmail("taejin7824@gmail.com").get();
-        Assertions.assertThat(member1).isEqualTo(result);
+        Optional<Member> result = memberRepository.findByEmail("taejin7824@gmail.com");
+        assertThat(result.get()).isEqualTo(member1);
+
+        result = memberRepository.findByEmail("taejin7824@kakao.com");
+        assertThat(result).isEqualTo(Optional.empty());
     }
 
     @Test
     void findByNickname() {
-        Optional<Member> noResultExpected = memberRepository.findByEmail("taejin7824@gmail.com");
-        Assertions.assertThat(noResultExpected).isEqualTo(Optional.empty());
-
-        Member member1 = new Member();
-        member1.setEmail("taejin7824@gmail.com");
-        member1.setPassword("1234");
-        member1.setNickname("taejin");
+        Member member1 = new Member("taejin7824@gmail.com", "1234", "taejin");
         memberRepository.save(member1);
 
-        Member result = memberRepository.findByNickname("taejin").get();
-        Assertions.assertThat(member1).isEqualTo(result);
+        Optional<Member> result = memberRepository.findByNickname("taejin");
+        assertThat(result.get()).isEqualTo(member1);
+
+        result = memberRepository.findByNickname("gene");
+        assertThat(result).isEqualTo(Optional.empty());
     }
 }
