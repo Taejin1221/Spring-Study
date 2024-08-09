@@ -37,11 +37,11 @@ public class MemberService {
         return memberRepository.findByNickname(nickname).isPresent();
     }
 
-    public boolean login(String email, String password) {
+    public String login(String email, String password) {
         Member member = getMemberByEmail(email);
 
         if (member.getPassword().equals(password)) {
-            return true;
+            return member.getNickname();
         } else {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다. 다시 한번 확인해주세요.");
         }

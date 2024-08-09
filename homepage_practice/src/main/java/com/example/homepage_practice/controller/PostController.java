@@ -31,9 +31,17 @@ public class PostController {
             Member member = memberService.getMemberByNickname(request.getNickname());
             Post post = postService.write(new Post(request.getTitle(), request.getContent(), member));
 
-            return new ResponseEntity<>(new ResponseDTO<>("게시물이 성공적으로 작성되었습니다.", post), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    new ResponseDTO<>(
+                            "게시물이 성공적으로 작성되었습니다.",
+                            post
+                    ), HttpStatus.OK);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<>(new ResponseDTO<>(e.getMessage(), null), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    new ResponseDTO<>(
+                            e.getMessage(),
+                            null
+                    ),HttpStatus.OK);
         }
     }
 
@@ -48,10 +56,17 @@ public class PostController {
                 posts = postService.getPostsByMember(member);
             }
 
-            String message = String.format("조회된 게시물 %d개", posts.size());
-            return new ResponseEntity<>(new ResponseDTO<>(message, posts), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    new ResponseDTO<>(
+                            String.format("조회된 게시물 %d개", posts.size()),
+                            posts
+                    ), HttpStatus.OK);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<>(new ResponseDTO<>(e.getMessage(), null), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    new ResponseDTO<>(
+                            e.getMessage(),
+                            null
+                    ), HttpStatus.OK);
         }
     }
 }

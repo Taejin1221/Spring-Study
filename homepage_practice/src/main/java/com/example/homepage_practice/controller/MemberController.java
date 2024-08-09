@@ -28,19 +28,35 @@ public class MemberController {
         try {
             Member result = memberService.join(new Member(memberJoinRequest.getEmail(), memberJoinRequest.getPassword(), memberJoinRequest.getNickname()));
 
-            return new ResponseEntity<>(new ResponseDTO<>("회원가입이 완료되었습니다.", result), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    new ResponseDTO<>(
+                            String.format("환영합니다, %s님. 회원가입이 완료되었습니다.", result.getNickname()),
+                            result
+                    ), HttpStatus.OK);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<>(new ResponseDTO<>(e.getMessage(), null), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(
+                    new ResponseDTO<>(
+                            e.getMessage(),
+                            null
+                    ), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO<Member>> login(@RequestBody MemberLoginRequest memberLoginRequest) {
         try {
-            memberService.login(memberLoginRequest.getEmail(), memberLoginRequest.getPassword());
-            return new ResponseEntity<>(new ResponseDTO<>("로그인 완료", null), HttpStatus.OK);
+            String nickname = memberService.login(memberLoginRequest.getEmail(), memberLoginRequest.getPassword());
+            return new ResponseEntity<>(
+                    new ResponseDTO<>(
+                            String.format("안녕하세요, %s님. 로그인이 완료되었습니다.", nickname),
+                            null
+                    ), HttpStatus.OK);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<>(new ResponseDTO<>(e.getMessage(), null), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    new ResponseDTO<>(
+                            e.getMessage(),
+                            null
+                    ), HttpStatus.OK);
         }
     }
 }
