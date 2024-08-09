@@ -39,7 +39,7 @@ public class MemberService {
     }
 
     public boolean login(String email, String password) {
-        Member member = getMember(email);
+        Member member = getMemberByEmail(email);
 
         if (member.getPassword().equals(password)) {
             return true;
@@ -48,9 +48,15 @@ public class MemberService {
         }
     }
 
-    private Member getMember(String email) {
+    private Member getMemberByEmail(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() ->
             new IllegalStateException("존재하지 않는 이메일입니다. 다시 한번 확인해주세요.")
+        );
+    }
+
+    public Member getMemberByNickname(String nickname) {
+        return memberRepository.findByNickname(nickname).orElseThrow(() ->
+                new IllegalStateException("존재하지 않는 닉네임입니다. 다시 한번 확인해주세요.")
         );
     }
 }

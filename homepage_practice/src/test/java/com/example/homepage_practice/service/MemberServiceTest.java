@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @SpringBootTest
 @Transactional
 class MemberServiceTest {
@@ -54,5 +56,19 @@ class MemberServiceTest {
             memberService.login("taejin7824@kakao.com", "qwer");
         });
         Assertions.assertThat(e.getMessage()).isEqualTo("존재하지 않는 이메일입니다. 다시 한번 확인해주세요.");
+    }
+
+    @Test
+    void getMemberByNickname() {
+        Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
+        memberService.join(member);
+
+        Member result = memberService.getMemberByNickname("taejin");
+        Assertions.assertThat(result).isEqualTo(member);
+
+        IllegalStateException e = org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class, () -> {
+            memberService.getMemberByNickname("gene");
+        });
+        Assertions.assertThat(e.getMessage()).isEqualTo("존재하지 않는 닉네임입니다. 다시 한번 확인해주세요.");
     }
 }
