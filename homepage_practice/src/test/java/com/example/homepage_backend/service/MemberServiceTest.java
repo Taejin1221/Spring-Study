@@ -44,7 +44,7 @@ class MemberServiceTest {
         Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
         memberService.join(member);
 
-        assertThat(memberService.login("taejin7824@gmail.com", "1234")).isEqualTo(true);
+        assertThat(memberService.login("taejin7824@gmail.com", "1234")).isEqualTo(member);
 
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> {
             memberService.login("taejin7824@gmail.com", "qwer");
