@@ -1,6 +1,6 @@
-package com.example.homepage_practice.repository;
+package com.example.homepage_backend.repository;
 
-import com.example.homepage_practice.domain.Member;
+import com.example.homepage_backend.domain.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.homepage_practice.domain.dto.response;
+package com.example.homepage_backend.domain.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

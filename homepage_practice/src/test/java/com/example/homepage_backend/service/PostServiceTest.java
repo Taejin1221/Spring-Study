@@ -1,9 +1,9 @@
-package com.example.homepage_practice.service;
+package com.example.homepage_backend.service;
 
-import com.example.homepage_practice.domain.Member;
-import com.example.homepage_practice.domain.Post;
-import com.example.homepage_practice.repository.MemberRepository;
-import com.example.homepage_practice.repository.PostRepository;
+import com.example.homepage_backend.domain.Member;
+import com.example.homepage_backend.domain.Post;
+import com.example.homepage_backend.repository.MemberRepository;
+import com.example.homepage_backend.repository.PostRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

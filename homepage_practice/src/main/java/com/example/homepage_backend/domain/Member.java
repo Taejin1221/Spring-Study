@@ -1,4 +1,4 @@
-package com.example.homepage_practice.domain;
+package com.example.homepage_backend.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

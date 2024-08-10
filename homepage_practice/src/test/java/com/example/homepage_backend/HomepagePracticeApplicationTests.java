@@ -1,4 +1,4 @@
-package com.example.homepage_practice;
+package com.example.homepage_backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

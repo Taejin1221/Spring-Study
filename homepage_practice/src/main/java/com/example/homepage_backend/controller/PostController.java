@@ -1,12 +1,12 @@
-package com.example.homepage_practice.controller;
+package com.example.homepage_backend.controller;
 
-import com.example.homepage_practice.domain.Member;
-import com.example.homepage_practice.domain.Post;
-import com.example.homepage_practice.domain.dto.request.WritePostRequest;
-import com.example.homepage_practice.domain.dto.response.PostResponse;
-import com.example.homepage_practice.domain.dto.response.ResponseDTO;
-import com.example.homepage_practice.service.MemberService;
-import com.example.homepage_practice.service.PostService;
+import com.example.homepage_backend.domain.Member;
+import com.example.homepage_backend.domain.Post;
+import com.example.homepage_backend.domain.dto.request.WritePostRequest;
+import com.example.homepage_backend.domain.dto.response.PostResponse;
+import com.example.homepage_backend.domain.dto.response.ResponseDTO;
+import com.example.homepage_backend.service.MemberService;
+import com.example.homepage_backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

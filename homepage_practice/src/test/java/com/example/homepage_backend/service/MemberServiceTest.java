@@ -1,7 +1,7 @@
-package com.example.homepage_practice.service;
+package com.example.homepage_backend.service;
 
-import com.example.homepage_practice.domain.Member;
-import com.example.homepage_practice.repository.MemberRepository;
+import com.example.homepage_backend.domain.Member;
+import com.example.homepage_backend.repository.MemberRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;

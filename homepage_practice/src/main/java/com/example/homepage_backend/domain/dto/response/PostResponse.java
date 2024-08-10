@@ -1,6 +1,6 @@
-package com.example.homepage_practice.domain.dto.response;
+package com.example.homepage_backend.domain.dto.response;
 
-import com.example.homepage_practice.domain.Post;
+import com.example.homepage_backend.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

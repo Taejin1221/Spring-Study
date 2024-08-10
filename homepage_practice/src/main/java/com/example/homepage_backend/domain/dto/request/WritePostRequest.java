@@ -1,4 +1,4 @@
-package com.example.homepage_practice.domain.dto.request;
+package com.example.homepage_backend.domain.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
