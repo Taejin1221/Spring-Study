@@ -44,7 +44,7 @@ public class MemberController {
                     new ResponseDTO<>(
                             e.getMessage(),
                             null
-                    ), HttpStatus.NOT_ACCEPTABLE);
+                    ), HttpStatus.OK);
         }
     }
 
