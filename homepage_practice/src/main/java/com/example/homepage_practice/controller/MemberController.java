@@ -3,6 +3,7 @@ package com.example.homepage_practice.controller;
 import com.example.homepage_practice.domain.Member;
 import com.example.homepage_practice.domain.dto.request.MemberJoinRequest;
 import com.example.homepage_practice.domain.dto.request.MemberLoginRequest;
+import com.example.homepage_practice.domain.dto.response.MemberResponse;
 import com.example.homepage_practice.domain.dto.response.ResponseDTO;
 import com.example.homepage_practice.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,21 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<ResponseDTO<Member>> joinMember(@RequestBody MemberJoinRequest memberJoinRequest) {
+    public ResponseEntity<ResponseDTO<MemberResponse>> joinMember(@RequestBody MemberJoinRequest req) {
         try {
-            Member result = memberService.join(new Member(memberJoinRequest.getEmail(), memberJoinRequest.getPassword(), memberJoinRequest.getNickname()));
+            MemberResponse res = new MemberResponse(
+                    memberService.join(
+                            new Member(req.getEmail(), req.getPassword(), req.getNickname())
+                    )
+            );
 
             return new ResponseEntity<>(
                     new ResponseDTO<>(
-                            String.format("환영합니다, %s님. 회원가입이 완료되었습니다.", result.getNickname()),
-                            result
+                            String.format("환영합니다, %s님. 회원가입이 완료되었습니다.", res.getNickname()),
+                            res
                     ), HttpStatus.OK);
         } catch (IllegalStateException e) {
+
             return new ResponseEntity<>(
                     new ResponseDTO<>(
                             e.getMessage(),
@@ -43,13 +49,16 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO<Member>> login(@RequestBody MemberLoginRequest memberLoginRequest) {
+    public ResponseEntity<ResponseDTO<MemberResponse>> login(@RequestBody MemberLoginRequest req) {
         try {
-            String nickname = memberService.login(memberLoginRequest.getEmail(), memberLoginRequest.getPassword());
+            MemberResponse res = new MemberResponse(
+                    memberService.login(req.getEmail(), req.getPassword())
+            );
+
             return new ResponseEntity<>(
                     new ResponseDTO<>(
-                            String.format("안녕하세요, %s님. 로그인이 완료되었습니다.", nickname),
-                            null
+                            String.format("안녕하세요, %s님. 로그인이 완료되었습니다.", res.getNickname()),
+                            res
                     ), HttpStatus.OK);
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(

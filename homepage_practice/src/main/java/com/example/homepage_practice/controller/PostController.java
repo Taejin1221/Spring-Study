@@ -3,6 +3,7 @@ package com.example.homepage_practice.controller;
 import com.example.homepage_practice.domain.Member;
 import com.example.homepage_practice.domain.Post;
 import com.example.homepage_practice.domain.dto.request.WritePostRequest;
+import com.example.homepage_practice.domain.dto.response.PostResponse;
 import com.example.homepage_practice.domain.dto.response.ResponseDTO;
 import com.example.homepage_practice.service.MemberService;
 import com.example.homepage_practice.service.PostService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/post")
@@ -26,15 +28,19 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDTO<Post>> writePost(@RequestBody WritePostRequest request) {
+    public ResponseEntity<ResponseDTO<PostResponse>> writePost(@RequestBody WritePostRequest req) {
         try {
-            Member member = memberService.getMemberByNickname(request.getNickname());
-            Post post = postService.write(new Post(request.getTitle(), request.getContent(), member));
+            Member member = memberService.getMemberByNickname(req.getNickname());
+            PostResponse res = new PostResponse(
+                    postService.write(
+                            new Post(req.getTitle(), req.getContent(), member)
+                    )
+            );
 
             return new ResponseEntity<>(
                     new ResponseDTO<>(
                             "게시물이 성공적으로 작성되었습니다.",
-                            post
+                            res
                     ), HttpStatus.OK);
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(
@@ -46,7 +52,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<Post>>> getPostsByNickname(@RequestParam(defaultValue = "") String nickname) {
+    public ResponseEntity<ResponseDTO<List<PostResponse>>> getPostsByNickname(@RequestParam(defaultValue = "") String nickname) {
         try {
             List<Post> posts;
             if (nickname.isBlank()) {
@@ -56,10 +62,12 @@ public class PostController {
                 posts = postService.getPostsByMember(member);
             }
 
+            List<PostResponse> res = posts.stream().map(PostResponse::new).collect(Collectors.toList());
+
             return new ResponseEntity<>(
                     new ResponseDTO<>(
-                            String.format("조회된 게시물 %d개", posts.size()),
-                            posts
+                            String.format("조회된 게시물 %d개", res.size()),
+                            res
                     ), HttpStatus.OK);
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(
