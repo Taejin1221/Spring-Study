@@ -52,13 +52,18 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<PostResponse>>> getPostsByNickname(@RequestParam(defaultValue = "") String nickname) {
+    public ResponseEntity<ResponseDTO<List<PostResponse>>> getPostsByNickname(@RequestParam(defaultValue = "") String nickname, @RequestParam(defaultValue = "") String email) {
         try {
             List<Post> posts;
-            if (nickname.isBlank()) {
+            if (nickname.isBlank() && email.isBlank()) {
                 posts = postService.getAllPosts();
             } else {
-                Member member = memberService.getMemberByNickname(nickname);
+                Member member;
+                if (!(nickname.isBlank())) {
+                    member = memberService.getMemberByNickname(nickname);
+                } else {
+                    member = memberService.getMemberByEmail(email);
+                }
                 posts = postService.getPostsByMember(member);
             }
 

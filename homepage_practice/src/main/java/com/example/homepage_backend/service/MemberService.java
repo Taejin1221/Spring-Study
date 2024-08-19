@@ -18,6 +18,7 @@ public class MemberService {
     }
 
     public Member join(Member member) {
+        System.out.println("===== Service =====");
         if (isDuplicatedEmail(member.getEmail())) {
             throw new IllegalStateException("이미 존재하는 이메일입니다.");
         }
@@ -25,6 +26,8 @@ public class MemberService {
         if (isDuplicatedNickname(member.getNickname())) {
             throw new IllegalStateException("이미 존재하는 닉네임입니다.");
         }
+
+        System.out.println(member);
 
         return memberRepository.save(member);
     }
@@ -47,7 +50,7 @@ public class MemberService {
         }
     }
 
-    private Member getMemberByEmail(String email) {
+    public Member getMemberByEmail(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() ->
             new IllegalStateException("존재하지 않는 이메일입니다. 다시 한번 확인해주세요.")
         );

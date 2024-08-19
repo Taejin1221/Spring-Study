@@ -58,6 +58,20 @@ class MemberServiceTest {
     }
 
     @Test
+    void getMemberByEmail() {
+        Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
+        memberService.join(member);
+
+        Member result = memberService.getMemberByEmail("taejin7824@gmail.com");
+        assertThat(result).isEqualTo(member);
+
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> {
+            memberService.getMemberByEmail("taejin7824@kakao.com");
+        });
+        assertThat(e.getMessage()).isEqualTo("존재하지 않는 이메일입니다. 다시 한번 확인해주세요.");
+    }
+
+    @Test
     void getMemberByNickname() {
         Member member = new Member("taejin7824@gmail.com", "1234", "taejin");
         memberService.join(member);
